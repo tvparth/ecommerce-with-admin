@@ -1,0 +1,88 @@
+ {% extends 'layouts/base.html' %}
+
+{% block title %} users {% endblock title %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Admin Login Users</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a> {% endcomment %}
+              {% comment %} <a href="#" class="btn btn-sm btn-neutral">Filters</a> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col">
+          <div class="card border-0">
+            <div  style="height: 600px;">
+              <div class="table-responsive">
+                {% if usr %}
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                      <th scope="col" style="widht:20%">Id</th>
+                      <th scope="col" style="widht:30%">User Name</th>
+                      <th scope="col" style="widht:30%">Email</th>
+                      <th scope="col" style="widht:20%">Action</th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    {% for usr in usr  %}
+                      <tr>
+                      <th scope="row">{{usr.id}}</th>
+                      <td>{{usr.username}}</td>
+                      <td>{{usr.email}}</td>
+                      <td>
+                      <a href="#" class="btn btn-warning btn-sm">Edit</a>
+                      {% comment %} <a href="{%  url 'update' usr.id %}" class="btn btn-warning btn-sm">Edit</a> {% endcomment %}
+                                    
+                                    <form action="#" method="post" class="d-inline">{% csrf_token %}
+                                      {% comment %} <form action="{% url 'delete' usr.id %}" method="post" class="d-inline">{% csrf_token %} {% endcomment %}
+                                    
+                                        <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
+                                    </form>
+                                </td>
+                            
+                      </tr>
+                      
+                    {% endfor %}
+                {% else %}
+                <h1>no data</h1>
+      
+                {% endif %}
+                                                         
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      
+      
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
+
+{% endblock javascripts %}
+
+
+
+

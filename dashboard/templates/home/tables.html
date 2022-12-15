@@ -1,0 +1,92 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block content %}
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a>
+            <a href="#" class="btn btn-sm btn-neutral">Filters</a> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header border-0">
+            <h3 class="mb-0">Table</h3>
+          </div>
+          <!-- Light table -->
+          {% if pro %}
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" >Id</th>
+                  <th scope="col" >Title</th>
+                  <th scope="col" >Selling Price</th>
+                  
+                  <th scope="col">Brand</th>
+                  <th scope="col" >Product Image</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+            </tbody>
+            {% for pr in pro  %}
+            <tr>
+            <th scope="row">{{pr.id}}</th>
+            <td>{{pr.title}}</td>
+            <td>{{pr.selling_price}}</td>
+            
+            <td>{{pr.brand}}</td>
+            <td>{{pr.product_image}}</td>
+            <td>
+            
+            <a href="{%  url 'update' pr.id %}" class="btn btn-warning btn-sm">Edit</a>
+                  <form action="{% url 'delete' pr.id %}" method="post" class="d-inline">{% csrf_token %}
+                      <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
+                  </form>
+                      </td>
+                  
+            </tr>
+            
+          {% endfor %}
+      {% else %}
+      <h1>no data</h1>
+
+      {% endif %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

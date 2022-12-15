@@ -1,0 +1,93 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Category {% endblock title %}
+
+{% block content %}
+<div class="row ml-4 mt-5">
+    <div class="col-sm-3">
+        <h4 class=" text-center alert alert-info">Add New Product </h4>
+    <form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="btn btn-success" value="Add">
+    </form>
+    </div>
+    <div class="col-sm-8">
+        <h2 class=" text-center alert alert-info">
+            Product Information</h2>
+            {% if pro %}
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" >Id</th>
+                    <th scope="col" >Title</th>
+                    <th scope="col" >Selling Price</th>
+                    
+                    <th scope="col">Brand</th>
+                    <th scope="col" >Product Image</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+              </tbody>
+              {% for pr in pro  %}
+              <tr>
+              <th scope="row">{{pr.id}}</th>
+              <td>{{pr.title}}</td>
+              <td>{{pr.selling_price}}</td>
+              
+              <td>{{pr.brand}}</td>
+              <td>{{pr.product_image}}</td>
+              <td>
+                {% comment %} <a href="{%  url 'update' pr.id %}" class="btn btn-warning btn-sm">Edit</a>
+                  <form action="{% url 'delete' pr.id %}" method="post" class="d-inline">{% csrf_token %}
+                      <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
+                  </form>
+                   {% endcomment %}
+                   
+                    <div class="dropdown">
+                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div class="dropdown-menu  dropdown-menu-arrow">
+                        <a class="dropdown-item" href="{%  url 'update' pr.id %}">Update</a>
+                        <form action="{% url 'delete' pr.id %}" method="post" class="d-inline">{% csrf_token %}
+                          {% comment %} <a class="dropdown-item" href="{% url 'delete' pr.id %}">Delete</a> {% endcomment %}
+                          <input type="submit" class="dropdown-item"  value="Delete">
+                          
+                      </form>
+                        
+                        
+                      </div>
+                    </div>
+              </td>
+
+                    
+              </tr>
+              
+            {% endfor %}
+        {% else %}
+        <h1>no data</h1>
+  
+        {% endif %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>   
+</div>
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
+
+{% endblock javascripts %}
+
+
+
+
