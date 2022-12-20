@@ -48,9 +48,9 @@ class Product(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES ,max_length=3)
     product_image = models.ImageField(upload_to='product_img')
     
-    """ This Function Is Returns A Id """
-    def __str__(self):
-        return str(self.id)
+    # """ This Function Is Returns A Id """
+    # def __str__(self):
+    #     return str(self.id)
     
 
 # Cart

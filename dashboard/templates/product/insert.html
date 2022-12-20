@@ -1,77 +1,74 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Category {% endblock title %}
+{% block title %} Product Page {% endblock title %}
 
 {% block content %}
-<div class="row ml-4 mt-5">
-    <div class="col-sm-3">
+<div class="row  mt-5 justify-content-center ">
+    <div class="col-md-8">
         <h4 class=" text-center alert alert-info">Add New Product </h4>
-    <form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" class="btn btn-success" value="Add">
-    </form>
-    </div>
-    <div class="col-sm-8">
-        <h2 class=" text-center alert alert-info">
-            Product Information</h2>
-            {% if pro %}
-            <div class="table-responsive">
-              <table class="table align-items-center table-flush">
-                
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col" >Id</th>
-                    <th scope="col" >Title</th>
-                    <th scope="col" >Selling Price</th>
-                    
-                    <th scope="col">Brand</th>
-                    <th scope="col" >Product Image</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-              </tbody>
-              {% for pr in pro  %}
-              <tr>
-              <th scope="row">{{pr.id}}</th>
-              <td>{{pr.title}}</td>
-              <td>{{pr.selling_price}}</td>
-              
-              <td>{{pr.brand}}</td>
-              <td>{{pr.product_image}}</td>
-              <td>
-                {% comment %} <a href="{%  url 'update' pr.id %}" class="btn btn-warning btn-sm">Edit</a>
-                  <form action="{% url 'delete' pr.id %}" method="post" class="d-inline">{% csrf_token %}
-                      <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
-                  </form>
-                   {% endcomment %}
-                   
-                    <div class="dropdown">
-                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                      <div class="dropdown-menu  dropdown-menu-arrow">
-                        <a class="dropdown-item" href="{%  url 'update' pr.id %}">Update</a>
-                        <form action="{% url 'delete' pr.id %}" method="post" class="d-inline">{% csrf_token %}
-                          {% comment %} <a class="dropdown-item" href="{% url 'delete' pr.id %}">Delete</a> {% endcomment %}
-                          <input type="submit" class="dropdown-item"  value="Delete">
-                          
-                      </form>
-                        
-                        
-                      </div>
-                    </div>
-              </td>
+    <div class="card-body">
+     <form action="" method="POST" enctype ="multipart/formdata">
+      {% csrf_token %}
+        <div class="mb-3">
+          <label for="" class="form-label">Title</label>
+          <input type="text" Required name = "title" class="form-control">
+        </div>
+        
+        <div class="mb-3">
+          <label for="" class="form-label">Selling Price</label>
+          <input type="text" Required name = "selling_price" class="form-control">
+        </div>
 
-                    
-              </tr>
+        <div class="mb-3">
+          <label for="" class="form-label">Discount Price</label>
+          <input type="text" Required name = "discount_price" class="form-control">
+        </div>
+        
+        <div class="mb-3">
+          <label for="" class="form-label">Discription</label>
+          <input type="text" Required name = "description " class="form-control">
+        </div>
+        
+        <div class="mb-3">
+          <label for="" class="form-label">Brand</label>
+          <input type="text" Required name = "brand" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="" class="form-label">Category</label>
+          
+          <select name="category" required="category" class="form-control">
+            <option value="" selected=""></option>
+          
+            <option value="Lp">Leptop</option>
+          
+            <option value="Dtp">Desktop</option>
+          
+            <option value="Tw">Topviewer</option>
+          
+            <option value="Sh">SecondHand</option>
+          
+          </select>
+        </div>
+{% comment %}         
+        <div class="form-row field-product_image mb-3">
+          
+            <label class="required" for="id_product_image">Product image:</label>
+                <input type="file" name="product_image" accept="image/*" required id="id_product_image" class="form-control">
               
-            {% endfor %}
-        {% else %}
-        <h1>no data</h1>
-  
-        {% endif %}
-              </table>
+          </div> {% endcomment %}
+
+
+          <div class="mb-3">
+         {% comment %}  <label for="" class="form-label">Image</label> 
+           <input type="file" Required name = "product_image" class="form-control">  {% endcomment %}
+          <label for="id_product_image">Product image:</label>
+          <input type="file" name="product_image" accept="image/*" id="id_product_image" class="form-control">
+        </div>  
+        <input type="submit" class="btn btn-info" value="save">
+     </form>
+    </div>  
+  </table> 
             </div>
           </div>
         </div>

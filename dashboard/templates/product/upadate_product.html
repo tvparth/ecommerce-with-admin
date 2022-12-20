@@ -4,15 +4,58 @@
 
 {% block content %}
 <div class="row ">
-    <div class="col-sm-8 offset-2">
-        <h2 class=" text-center alert alert-info"> Update Student Information </h2>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-            
+    <div class="col-sm-8 offset-2 mt-5">
+        <h2 class=" text-center alert alert-info"> Edit Product</h2>
+        <div class="card-body">
+            <form action="" method="POST" enctype ="multipart/formdata">
+             {% csrf_token %}
+                <div class="mb-3">
+                 <label for="" class="form-label">Title</label>
+                 <input type="text" Required name = "title" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                  <label for="" class="form-label">Selling Price</label>
+                  <input type="text" Required name = "selling_price" class="form-control">
+                </div>
+        
+                <div class="mb-3">
+                  <label for="" class="form-label">Discount Price</label>
+                  <input type="text" Required name = "discount_price" class="form-control">
+                </div>
                 
+                <div class="mb-3">
+                  <label for="" class="form-label">Discription</label>
+                  <input type="text" Required name = "description " class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="" class="form-label">Brand</label>
+                  <input type="text" Required name = "brand" class="form-control">
+                </div>
+        
+                <div class="mb-3">
+                  <label for="" class="form-label">Category</label>
+                  
+                  <select name="category"  Required name="category" class="form-control">
+                    <option value="Lp">Leptop</option>
+                  
+                    <option value="Dtp">Desktop</option>
+                  
+                    <option value="Tw">Topviewer</option>
+                  
+                    <option value="Sh">SecondHand</option>
+                  
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="id_product_image">Product image:</label>
+                  <input type="file" name="product_image" accept="image/*" id="id_product_image" class="form-control">
+                </div>
+                
+            
             <input type="submit" class="btn btn-success"  value="Update">
-            <a href="{% url 'insert' %}" class="btn btn-info" >Back To Home</a>
+            <a href="{% url 'table' %}" class="btn btn-info" >Back To Home</a>
 
         </form>
     </div>

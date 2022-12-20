@@ -47,15 +47,12 @@
                       <td>{{usr.username}}</td>
                       <td>{{usr.email}}</td>
                       <td>
-                      <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                      {% comment %} <a href="{%  url 'update' usr.id %}" class="btn btn-warning btn-sm">Edit</a> {% endcomment %}
-                                    
-                                    <form action="#" method="post" class="d-inline">{% csrf_token %}
-                                      {% comment %} <form action="{% url 'delete' usr.id %}" method="post" class="d-inline">{% csrf_token %} {% endcomment %}
-                                    
-                                        <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
-                                    </form>
-                                </td>
+                      
+                      <a href="{%  url 'upd' usr.id %}" class="btn btn-warning btn-sm">Edit</a>
+                  <form action="{% url 'del' usr.id %}" method="post" class="d-inline">{% csrf_token %}
+                      <input type="submit" class="btn btn-danger btn-sm"  value="Delete">
+                  </form>
+                      </td>
                             
                       </tr>
                       

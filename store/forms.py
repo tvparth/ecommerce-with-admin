@@ -97,14 +97,20 @@ class CustomerProfileForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta :
         model = Product
-        fields = ['title','selling_price','description','brand','product_image']
+        fields = ['title','selling_price','description','brand']
+        # fields = '__all__'
         widgets = {
-            
+
             'title':forms.TextInput(attrs={'class':'form-control'}),
-            'selling_price':forms.NumberInput(attrs={'class':'form-control'}),
-            'description':forms.Textarea(attrs={'class':'form-control','cols': 5, 'rows': 3}),
+            'selling_price':forms.TextInput(attrs={'class':'form-control'}),
+            'description':forms.Textarea(attrs={'class':'form-control','cols': 5, 'rows': 1}),
             'brand':forms.TextInput(attrs={'class':'form-control'}),
-            'product_image':forms.FileInput(attrs={'class':'form-control'}),
+            'file': forms.FileField() 
+           
+            
         }
 
-   
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'

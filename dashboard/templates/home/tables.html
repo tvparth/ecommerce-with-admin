@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-
+{% load static %}
 {% block title %} Tables {% endblock title %}
 
 {% block content %}
@@ -46,8 +46,9 @@
                   <th scope="col" >Id</th>
                   <th scope="col" >Title</th>
                   <th scope="col" >Selling Price</th>
-                  
                   <th scope="col">Brand</th>
+                  <th scope="col">Category</th>
+
                   <th scope="col" >Product Image</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -58,9 +59,20 @@
             <th scope="row">{{pr.id}}</th>
             <td>{{pr.title}}</td>
             <td>{{pr.selling_price}}</td>
-            
             <td>{{pr.brand}}</td>
-            <td>{{pr.product_image}}</td>
+            <td>{{pr.category}}</td> 
+            {% if pr.product_image %}
+              <td>
+                <img src="{{pr.product_image.url}}" alt="" class="img-thumbnail"  width= "100px" height="100px">
+
+              </td>
+              {% else %}
+              <td>
+                
+              </td>
+              {% endif %}
+              
+              
             <td>
             
             <a href="{%  url 'update' pr.id %}" class="btn btn-warning btn-sm">Edit</a>

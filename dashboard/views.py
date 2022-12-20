@@ -7,8 +7,9 @@ from django.urls import reverse
 from django import template
 from django.contrib.auth.models import User
 from store.models import Product, User
-from store.forms import ProductForm
-
+from store.forms import ProductForm, UserForm
+from django.contrib import messages
+import os
 # Create your views here.
 #Admin 
 
@@ -45,7 +46,7 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
 
-
+#Admin Login
 def admin_login(request):
     form = AdminLoginForm(request.POST or None)
 
@@ -67,7 +68,7 @@ def admin_login(request):
 
     return render(request, "accounts/login.html", {"form": form, "msg": msg})
 
-#
+#Admin Register
 def register_user(request):
     msg = None
     success = False
@@ -83,7 +84,7 @@ def register_user(request):
             msg = 'User created - please <a href="/login">login</a>.'
             success = True
 
-            return redirect("/login/")
+            return redirect("/custom/")
 
         else:
             msg = 'Form is not valid'
@@ -93,55 +94,84 @@ def register_user(request):
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 
-#
+#--------------Users ------------#
+# Show All User
 def show_user(request):
     usr = User.objects.all()
-    return render(request, 'home/user.html',{'usr':usr})
+    return render(request, 'home/user.html',{'usr':usr,})
 
 
-#
+# This Is User Update/Edit
+def update_user(request,id):
+    fm = ""
+    if request.method == 'POST':
+      ur = User.objects.get(pk = id)
+      fm = UserForm(request.POST) 
+      if fm.is_valid():
+          fm.save()
+      else:
+          ur = User.objects.get(pk= id)
+          fm = UserForm(instance = ur)    
+    return render(request,'users/user_edit.html',{'fm':fm})
+    
+
+# This User Delete
+def delete_user(request, id):
+    if request.method == 'POST':
+        ur = User.objects.get(pk=id)
+        ur.delete()
+        return HttpResponseRedirect('/user/')
+
+
+
+# ----------Product-------------#
+
+#Product Show 
 def show_product(request):
     prod = Product.objects.all()       
     return render(request,'home/tables.html' ,{'pro':prod})
 
-#
+# Add Product
 def add_product(request):
-    if request.method =='POST':
-        fm = ProductForm(request.POST)
-        if fm.is_valid():
-           id = fm.cleaned_data['id']
-           title = fm.cleaned_data['title']
-           sell  = fm.cleaned_data['selling price']
-           description = fm.cleaned_data['description'] 
-           brand  = fm.cleaned_data['brand']
-           nep = Product(id=id, title=title, sell=sell, description=description, brand=brand)
-           nep.save()
-           fm = ProductForm()    
-    else:
-        fm = ProductForm() 
-    prod = Product.objects.all()       
-    return render(request,'product/insert.html' ,{'form':fm,'pro':prod})
-
-# This Function Will Update/Edit
-def update_product(request,id):
-    fm = ""
     if request.method == 'POST':
-      pi = Product.objects.get(pk = id)
-      fm = ProductForm(request.POST) 
-      if fm.is_valid():
-          fm.save()
-      else:
-          pi = Product.objects.get(pk= id)
-          fm = ProductForm(instance = pi)    
-    return render(request,'product/upadate_product.html',{'form':fm})
+        prod = Product()
+        prod.title = request.POST.get('title')
+        prod.selling_price = request.POST.get('selling_price')
+        prod.discount_price = request.POST.get('discount_price')
+        prod.brand = request.POST.get('brand')
+        prod.category = request.POST.get('category')
+        prod.product_image = request.POST.get('product_img')
+        
+        prod.save()
+        return redirect('/tables/')
+    return render(request,'product/insert.html' )
+
+
+# This Is Product Update/Edit
+def edit_product(request,id):
+    prod = Product.objects.get(pk=id)
+    if request.method == 'POST':
+        if len(request.FILES) != 0 :
+            if len(prod.product_image) > 0 :
+                os.remove(prod.product_image.path)
+                prod.product_image = request.FILES('product_image')
+            prod.title = request.POST.get('title')
+            prod.selling_price = request.POST.get('selling_price')
+            prod.discount_price = request.POST.get('discount_price')
+            prod.brand = request.POST.get('brand')
+            prod.category = request.POST.get('category')
+            prod.save()
+          
+            return redirect('/tables/')
+    return render(request,'product/upadate_product.html',{'prod':prod})
     
 
-# This Functoin Will Delete
+# This Is Product  Delete
 def delete_data(request, id):
     if request.method == 'POST':
-        pi = Product.objects.get(pk=id)
-        pi.delete()
-        return HttpResponseRedirect('/add_product/')
+        prod = Product.objects.get(pk=id)
+        prod.delete()
+        return HttpResponseRedirect('/tables/')
 
 
 
