@@ -52,5 +52,6 @@ urlpatterns = [
 
     # Order And PayMent Url
     path('checkout/', views.checkout, name='checkout'),
+    path('orderplace/', views.order_placed, name='orderplace'),
     path('paymentdone/', views.payment_done, name='paymentdone'),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

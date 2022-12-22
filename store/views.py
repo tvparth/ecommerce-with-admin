@@ -1,7 +1,6 @@
-from pickle import FALSE
 from django.shortcuts import render,redirect
 from django.views import View
-from . models import Customer,Product,Cart,OrderPlaced
+from . models import Customer,Product,Cart,OrderPlaced,Order,OrderItem
 from . forms import CustomerRegistraionForm,CustomerProfileForm
 from django.contrib import messages
 from django.db.models import Q
@@ -9,9 +8,8 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
-
 # Create your views here.
+
 # Product View
 class ProductView(View):
     def get(self,request):
@@ -23,12 +21,11 @@ class ProductView(View):
         'laptop':laptop,'desktok':desktok,'secondhand':secondhand})
 
 
-
 # Product Details
 class ProductDetailView(View):
     def get (self,request,pk):
      product =Product.objects.get(pk=pk)
-     item_already_in_cart =False
+     item_already_in_cart = False
      
      if request.user.is_authenticated:
         item_already_in_cart = Cart.objects.filter(Q(product=product.id)& 
@@ -43,7 +40,7 @@ class ProductDetailView(View):
 def add_to_cart(request):
     user= request.user
     product_id = request.GET.get('prod_id')
-    product=Product.objects.get(id= product_id)
+    product=Product.objects.get(id = product_id)
     Cart(user=user,product =product).save()
     return redirect('/cart')
 
@@ -171,24 +168,67 @@ def orders(request):
     return render(request,'store/order.html',{'order_placed':op})
 
 
-# Change Password
-# def change_password(request):
-#     return render(request,'store/changepass.html')
+
+@login_required
+def order_placed(request):
+    if request.method == 'GET':
+        neworder = Order()
+        neworder.user = request.user
+        neworder.fname = request.POST.get('fname')
+        neworder.lname = request.POST.get('lname')
+        neworder.email = request.POST.get('email')
+        neworder.phone = request.POST.get('phone')
+        neworder.address = request.POST.get('adress')
+        neworder.city = request.POST.get('city')
+        neworder.state = request.POST.get('state')
+        neworder.countory = request.POST.get('country')
+        neworder.pincode = request.POST.get('pincode')
+        neworder.payment_mode = request.POST.get('')
+
+        cart = Cart.objects.filter(user= request.user)
+        cart_total_price = 0
+        for item in cart:
+            cart_total_price = cart_total_price+item.product.selling_price * item.product.qty
+        
+        neworder.total_price = cart_total_price
+        trackno = 'kan'+str(random.rendint(1111111,9999999))
+        while Order.objects.filter(tracking_no=trackno) is None:
+            trackno = 'kan'+str(random.rendint(1111111,9999999))
+
+        neworder.tracking_no =trackno
+        neworder.save()
+        neworderitems = Cart.objects.filter(user= request.user)
+        for items in neworderitems:
+            OrderItem.objects.create(
+                order = neworder,
+                product = item.product,
+                price = item.product.selling_price,
+                quantity =item.product_qty
+            )
+
+            # to decrease the product quantity from stock
+            orderproduct = Product.objects.filter(user= request.user)
+            orderproduct.quantity = orderproduct.quantity - item.product_qty
+            orderproduct.save()
+
+        # To clear User's cart
+        Cart.objects.filter(user= request.user)
+        return redirect('/')
+    return render(request,'database/chekout.html')
+
 
 
 # Leptop Filter
 def leptop(request,data=None):
     if data == None:
         leptop = Product.objects.filter(category='Lp')
-    elif data =='mac' or data == 'hp':
+    elif data == 'Dell' or data == 'HP':
+        leptop = Product.objects.filter(category='Lp').filter(brand=data)
+    elif data == 'Asuse'  or data == 'Lenovo':
+        leptop = Product.objects.filter(category='Lp').filter(brand=data)
+    elif data == 'Acer'  or data == 'Macbook':
         leptop = Product.objects.filter(category='Lp').filter(brand=data)
     return render(request,'store/leptop.html',{'leptop':leptop})
-
-
-# Customer Login 
-""" Login Is In inbilt Function Used"""
-# def customer_login(request):
-#     return render(request,'store/login.html')
 
 
 # Customer Registration

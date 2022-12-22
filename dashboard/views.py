@@ -94,6 +94,12 @@ def register_user(request):
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 
+
+# User Profile
+def user_profile(request):
+    return render(request,'home/profile.html')
+
+
 #--------------Users ------------#
 # Show All User
 def show_user(request):
