@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render,redirect, HttpResponse
 from django.views import View
 from . models import Customer,Product,Cart,OrderPlaced,Order,OrderItem
 from . forms import CustomerRegistraionForm,CustomerProfileForm
@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -179,6 +180,18 @@ def remove_cart(request):
 
 #Buy-Now
 def buy_now(request): 
+    if request.method == 'POST':
+        # Get the user's form data
+        user_data = request.POST
+        # Send an email to the admin with the user's data
+        send_mail(
+            'New User Submission',
+            'A new user has submitted the form with the following data: ' + user_data,
+            'noreply@example.com',
+            ['admin@example.com'],
+            fail_silently=False,
+        )
+        return HttpResponse('Thank you for submitting the form.')
     return render(request,'store/buynow.html')
 
 
