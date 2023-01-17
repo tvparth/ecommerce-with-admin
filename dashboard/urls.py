@@ -1,7 +1,8 @@
-from django.urls import path,re_path
+from django.urls import path
 from dashboard import views
 from .views import admin_login, register_user
 from django.contrib.auth.views import LogoutView
+
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -25,6 +26,7 @@ urlpatterns = [
 
     path('user/<int:id>/',views.update_user,name='upd'),
     path('del/<int:id>/',views.delete_user,name='del'),
+    
     
     
     

@@ -28,7 +28,7 @@
     {% if not request.user.is_authenticated %}
         <form action="/add-to-cart" class="d-inline">
         <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
-        <button type="submit" class="btn btn-primary shadow px-5 py-2">Add To Cart</button>
+        <button type="submit" class="btn btn-warning shadow px-5 py-2">Go To Cart</button>
         </form>
     {% endif %}
 

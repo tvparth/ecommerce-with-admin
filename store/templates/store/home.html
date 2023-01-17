@@ -104,7 +104,7 @@
   {% for d in    desktok %}
     <a href="{% url 'product-detail' d.id %}" class="btn"><div class="item">
     <img src="{{d.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{d.title}}
-    </span><br><span class="fs-5">Rs.{{d.discount_price}}</span></div></a>
+    </span><br><span class="fs-5">Rs.{{d.selling_price}}</span></div></a>
   {% endfor %}
  </div>
 </div> <br> <br>
@@ -119,7 +119,7 @@
    {% for tp in topviewer %}
      <a href="{% url 'product-detail' tp.id %}" class="btn"><div class="item">
      <img src="{{tp.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{tp.title}}
-     </span><br><span class="fs-5">Rs.{{tp.discount_price}}</span></div></a>
+     </span><br><span class="fs-5">Rs.{{tp.selling_price}}</span></div></a>
    {% endfor %}
   </div>
  </div>

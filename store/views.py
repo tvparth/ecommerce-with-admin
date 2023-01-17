@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.views import View
 from . models import Customer,Product,Cart,OrderPlaced,Order,OrderItem
 from . forms import CustomerRegistraionForm,CustomerProfileForm
@@ -21,6 +21,56 @@ class ProductView(View):
         'laptop':laptop,'desktok':desktok,'secondhand':secondhand})
 
 
+# Leptop Filter
+def leptop(request,data=None):
+    if data == None:
+        leptop = Product.objects.filter(category='Lp')
+    elif data == 'Dell' or data == 'HP':
+        leptop = Product.objects.filter(category='Lp').filter(brand=data)
+    # elif data == 'Asuse'  or data == 'Lenovo':
+    elif data == 'Asuse' or data == 'Lenovo':        
+        leptop = Product.objects.filter(category='Lp').filter(brand=data)
+    elif data == 'Acer'  or data == 'Macbook':
+        leptop = Product.objects.filter(category='Lp').filter(brand=data)
+    return render(request,'store/electronics/leptop.html',{'leptop':leptop})
+
+# Desktop Filter
+def desktop(request,data=None):
+    if data == None:
+        desktop = Product.objects.filter(category='Dtp')
+    elif data == 'Dell' or data == 'HP':
+        desktop = Product.objects.filter(category='Dtp').filter(brand=data)
+    elif data == 'Asuse' or data == 'Lenovo':        
+        desktop = Product.objects.filter(category='Dtp').filter(brand=data)
+    elif data == 'Acer'  or data == 'Macbook':
+        desktop = Product.objects.filter(category='Dtp').filter(brand=data)
+    return render(request,'store/electronics/desktop.html',{'desktop':desktop})
+
+# Topviewer Filter
+def topviewer(request,data=None):
+    if data == None:
+        topviewer = Product.objects.filter(category='Tw')
+    elif data == 'Dell' or data == 'HP':
+        topviewer = Product.objects.filter(category='Tw').filter(brand=data)
+    elif data == 'Asuse' or data == 'Lenovo':        
+        topviewer = Product.objects.filter(category='Tw').filter(brand=data)
+    elif data == 'Acer'  or data == 'Macbook':
+        topviewer = Product.objects.filter(category='Tw').filter(brand=data)
+    return render(request,'store/electronics/topviewer.html',{'topviewer':topviewer})
+
+#  Secondhand Filter
+def secondhand(request,data=None):
+    if data == None:
+        secondhand = Product.objects.filter(category='Sh')
+    elif data == 'Dell' or data == 'HP':
+        secondhand = Product.objects.filter(category='Sh').filter(brand=data)
+    elif data == 'Asuse' or data == 'Lenovo':        
+        secondhand = Product.objects.filter(category='Sh').filter(brand=data)
+    elif data == 'Acer'  or data == 'Macbook':
+        secondhand = Product.objects.filter(category='Sh').filter(brand=data)
+    return render(request,'store/electronics/secondhand.html',{'secondhand':secondhand})
+
+
 # Product Details
 class ProductDetailView(View):
     def get (self,request,pk):
@@ -34,7 +84,6 @@ class ProductDetailView(View):
      'item_already_in_cart ':item_already_in_cart })
 
 
-
 # Add To Cart View
 @login_required
 def add_to_cart(request):
@@ -44,7 +93,7 @@ def add_to_cart(request):
     Cart(user=user,product =product).save()
     return redirect('/cart')
 
-
+# Show Cart
 @login_required
 def show_cart(request):
     if request.user.is_authenticated:
@@ -87,7 +136,7 @@ def plus_cart(request):
                 }
         return JsonResponse(data)
 
-# Minuscart
+# Minus Quantity 
 def minus_cart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -108,7 +157,7 @@ def minus_cart(request):
                 }
         return JsonResponse(data)
 
-# Removed Cart
+#Removed Quantity 
 def remove_cart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -128,10 +177,8 @@ def remove_cart(request):
                 }
         return JsonResponse(data)
 
-
-
 #Buy-Now
-def buy_now(request):
+def buy_now(request): 
     return render(request,'store/buynow.html')
 
 
@@ -168,69 +215,6 @@ def orders(request):
     return render(request,'store/order.html',{'order_placed':op})
 
 
-
-@login_required
-def order_placed(request):
-    if request.method == 'GET':
-        neworder = Order()
-        neworder.user = request.user
-        neworder.fname = request.POST.get('fname')
-        neworder.lname = request.POST.get('lname')
-        neworder.email = request.POST.get('email')
-        neworder.phone = request.POST.get('phone')
-        neworder.address = request.POST.get('adress')
-        neworder.city = request.POST.get('city')
-        neworder.state = request.POST.get('state')
-        neworder.countory = request.POST.get('country')
-        neworder.pincode = request.POST.get('pincode')
-        neworder.payment_mode = request.POST.get('')
-
-        cart = Cart.objects.filter(user= request.user)
-        cart_total_price = 0
-        for item in cart:
-            cart_total_price = cart_total_price+item.product.selling_price * item.product.qty
-        
-        neworder.total_price = cart_total_price
-        trackno = 'kan'+str(random.rendint(1111111,9999999))
-        while Order.objects.filter(tracking_no=trackno) is None:
-            trackno = 'kan'+str(random.rendint(1111111,9999999))
-
-        neworder.tracking_no =trackno
-        neworder.save()
-        neworderitems = Cart.objects.filter(user= request.user)
-        for items in neworderitems:
-            OrderItem.objects.create(
-                order = neworder,
-                product = item.product,
-                price = item.product.selling_price,
-                quantity =item.product_qty
-            )
-
-            # to decrease the product quantity from stock
-            orderproduct = Product.objects.filter(user= request.user)
-            orderproduct.quantity = orderproduct.quantity - item.product_qty
-            orderproduct.save()
-
-        # To clear User's cart
-        Cart.objects.filter(user= request.user)
-        return redirect('/')
-    return render(request,'database/chekout.html')
-
-
-
-# Leptop Filter
-def leptop(request,data=None):
-    if data == None:
-        leptop = Product.objects.filter(category='Lp')
-    elif data == 'Dell' or data == 'HP':
-        leptop = Product.objects.filter(category='Lp').filter(brand=data)
-    elif data == 'Asuse'  or data == 'Lenovo':
-        leptop = Product.objects.filter(category='Lp').filter(brand=data)
-    elif data == 'Acer'  or data == 'Macbook':
-        leptop = Product.objects.filter(category='Lp').filter(brand=data)
-    return render(request,'store/leptop.html',{'leptop':leptop})
-
-
 # Customer Registration
 class CustomerRegistrationView(View):
     def get (self,request):
@@ -242,7 +226,6 @@ class CustomerRegistrationView(View):
             messages.success(request,'Congratualtions Registraion Successfully !!! ')
             form.save()
         return render(request,'store/registration.html',{'form':form})
-
 
 # CheckOut
 @login_required
@@ -259,7 +242,7 @@ def checkout(request):
         for p in cart_product:
             tempamount =(p.quantity * p.product.selling_price)
             amount += tempamount
-        totalamount=amount + shipping_amount
+    totalamount=amount + shipping_amount
     return render(request,'store/checkout.html',{'add':add,'totalamount':totalamount,'cart_items':cart_items})
 
 
@@ -270,6 +253,6 @@ def payment_done(request):
     customer = Customer.objects.get(id = custid)
     cart = Cart.objects.filter(user=user)
     for c in cart:
-        OrderPlaced(user=user,customer = customer,product = c.product, quantity=c.quantity).save()
+        OrderPlaced(user=user,customer=customer,product=c.product, quantity=c.quantity).save()
         c.delete()
-    return redirect("orders")
+    return redirect("buy-now")

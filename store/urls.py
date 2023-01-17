@@ -1,9 +1,11 @@
 from django.urls import path
 from store import views
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from .forms import LoginForm, PasswordChangeForm, MyPasswordResetForm, MySetPasswordForm
+
 urlpatterns = [
 
     # View Urls
@@ -16,6 +18,7 @@ urlpatterns = [
     path('pluscart/', views.plus_cart,),
     path('minuscart/', views.minus_cart),
     path('removecart/', views.remove_cart),
+    # path('removecart/<int:prod_id>/', views.remove_cart,name='remove_cart'),
 
     
     path('buy/', views.buy_now, name='buy-now'),
@@ -46,12 +49,26 @@ urlpatterns = [
         template_name ='store/pass_reset_complete.html'),name="password_reset_complete"),
    
     
-    # Filter Url
+    # Laptop Filter Url
     path('leptop/', views.leptop, name='leptop'),
     path('leptop/<slug:data>', views.leptop, name='leptopdata'),
+    
+    # Desktop Filter Url
+    path('desktop/', views.desktop, name='desktop'),
+    path('desktop/<slug:data>', views.desktop, name='desktopdata'),
+
+    # Topviewer Filter Url
+    path('topviewer/', views.topviewer, name='topviewer'),
+    path('topviewer/<slug:data>', views.topviewer, name='topviewerdata'),
+    
+    # Secondhand Filter Url
+    path('secondhand/', views.secondhand, name='secondhand'),
+    path('secondhand/<slug:data>', views.secondhand, name='secondhanddata'),
+
+
 
     # Order And PayMent Url
     path('checkout/', views.checkout, name='checkout'),
-    path('orderplace/', views.order_placed, name='orderplace'),
+    
     path('paymentdone/', views.payment_done, name='paymentdone'),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

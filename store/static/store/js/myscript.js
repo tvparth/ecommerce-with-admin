@@ -69,9 +69,8 @@ $('.minus-cart').click(function () {
 })
 
 // Removed Cart
-
 $('.remove-cart').click(function () {
-    var id = $(this).attr('pid').toString();
+    var id = $(this).attr("pid").toString();
     var eml = this
     // console.log(id)
     $.ajax({
@@ -81,14 +80,21 @@ $('.remove-cart').click(function () {
             prod_id:id
         },
         success: function (data) {
-            console.log("Delete")
+            // console.log(data)
             
             document.getElementById("amount").innerText = data.amount
             document.getElementById("totalamount").innerText = data.totalamount
-            eml.parentNode.parentNode.parentNode.remove()
-        
-        }
+        },
         
     })
 
 })
+
+
+
+
+
+
+
+
+    

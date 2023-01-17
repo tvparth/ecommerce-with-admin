@@ -7,8 +7,7 @@ from django.urls import reverse
 from django import template
 from django.contrib.auth.models import User
 from store.models import Product, User
-from store.forms import ProductForm, UserForm
-from django.contrib import messages
+from store.forms import  UserForm
 import os
 # Create your views here.
 #Admin 

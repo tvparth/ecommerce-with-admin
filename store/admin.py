@@ -22,7 +22,3 @@ class CartModelAdmin(admin.ModelAdmin):
 class OrderPlacedModelAdmin(admin.ModelAdmin):
     list_display =['id','user','customer','product','quantity','order_date','status']
 
-# Order placed
-admin.site.register(Order)
-
-admin.site.register(OrderItem)

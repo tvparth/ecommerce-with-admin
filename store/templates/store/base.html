@@ -39,7 +39,9 @@
              </a>
              <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
                 <li><a class="dropdown-item" href="{% url 'leptop' %}">Leptop</a></li>
-                <li><a class="dropdown-item" href="#">Desktok</a></li>
+                <li><a class="dropdown-item" href="{% url 'desktop' %}">Desktok</a></li>
+                <li><a class="dropdown-item" href="{% url 'topviewer' %}">Topviewer</a></li>
+                <li><a class="dropdown-item" href="{% url 'secondhand' %}">Secondhand</a></li>
                 
              </ul>
            </li>
@@ -48,12 +50,12 @@
                Leptop
              </a>
              <ul class="dropdown-menu" aria-labelledby="leptopDropdown">
-               <li><a class="dropdown-item" href="#">HP</a></li>
-               <li><a class="dropdown-item" href="#">Macbook</a></li>
-               <li><a class="dropdown-item" href="#">Lenovo</a></li>  
-               <li><a class="dropdown-item" href="#">Dell</a></li> 
+               <li><a class="dropdown-item" href="{% url 'leptopdata' 'HP' %}">HP</a></li>
+               <li><a class="dropdown-item" href="{% url 'leptopdata' 'Macbook' %}">Macbook</a></li>
+               <li><a class="dropdown-item" href="{% url 'leptopdata' 'Lenovo' %}">Lenovo</a></li>  
+               <li><a class="dropdown-item" href="{% url 'leptopdata' 'Dell' %}">Dell</a></li> 
                <li><a class="dropdown-item" href="#">Asus</a></li> 
-               <li><a class="dropdown-item" href="#">Acer</a></li> 
+               <li><a class="dropdown-item" href="{% url 'leptopdata' 'Acer' %}">Acer</a></li> 
 
              </ul>
            </li>
@@ -96,6 +98,8 @@
     {% block banner_slider %} {% endblock banner_slider %}
     {% block livesale %} {% endblock livesale %}
     {% block main-content %} {% endblock main-content %}
+    {% block payment-gateway %}{% endblock payment-gateway %}
+
 
     <!-- Start Footer -->
     <footer class="container-fluid bg-dark text-center p-2 mt-5">
